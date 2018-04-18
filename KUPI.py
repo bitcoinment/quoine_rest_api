@@ -5,26 +5,28 @@
 import time
 import requests
 import json
+import os
 
 # GLOBAL_DOMAIN = 'http://127.0.0.1:8000'
 GLOBAL_DOMAIN = 'http://kupi.net'
-
+GLOBAL_API_KEY = False
 
 def jprint(arr):
     print(json.dumps(arr, indent=4, sort_keys=False))
 
+
 def apiRoute(arr):
 
-    if not 'KUPINET_API_KEY' in globals():
+    if not GLOBAL_API_KEY:
         return {
             'error': True,
-            'message': 'Variable KUPINET_API_KEY not specified!'
+            'message': 'Api key not specified!'
         }
 
 
-    conf_site = GLOBAL_DOMAIN+'/api/v1/'+KUPINET_API_KEY+'/'
-    postfix = '/'.join(arr) + '/'
-    url = conf_site + postfix.lower()
+    conf_site = os.path.join(GLOBAL_DOMAIN,'api', 'v1', GLOBAL_API_KEY)
+    postfix = '/'.join(arr)
+    url = os.path.join(conf_site, postfix.lower())
 
     try:
         print(url)
@@ -44,11 +46,11 @@ def apiRoute(arr):
 
 
 
-class NET:
+class KUPINET:
 
-    def __init__(self):
-        pass
-
+    def __init__(self, apikey):
+        global GLOBAL_API_KEY
+        GLOBAL_API_KEY = apikey
 
 
     class Stocks:
@@ -121,45 +123,30 @@ class NET:
 if __name__ == "__main__":
     pass
 
-    KUPINET_API_KEY = 'freeApi'
 
-    # orders = NET.Stocks('Binance').getOrders('ETH','BTC')
+    # orders = KUPINET('freeApi').Stocks('Binance').getOrders('ETH','BTC')
     # jprint(orders)
-    #
-    # allStocks = NET.Stocks().getList()
+
+    # allStocks = KUPINET('freeApi').Stocks().getList()
     # jprint(allStocks)
 
     #
-    # pairs = NET.Stocks('Binance').getAllPairs()
+    # pairs = KUPINET.Stocks('Binance').getAllPairs()
     # jprint(pairs)
 
-    # prices = NET.Pair('LTC','ETH').getBestPrices()
+    # prices = KUPINET.Pair('LTC','ETH').getBestPrices()
     # jprint(prices)
 
 
-    # bestAsk = NET.BestPrices('LTC').Ask()
-    # bestBid = NET.BestPrices('LTC').Bid()
+    # bestAsk = KUPINET.BestPrices('LTC').Ask()
+    # bestBid = KUPINET.BestPrices('LTC').Bid()
     # jprint(bestAsk)
     # jprint(bestBid)
 
 
-    # calcMath = NET.Calc('LTC','ETH').Amount(10)
+    # calcMath = KUPINET.Calc('LTC','ETH').Amount(10)
     # jprint(calcMath)
 
-    # calcData = NET.Calc().Data()
+    # calcData = KUPINET.Calc().Data()
     # jprint(calcData)
 
-
-
-# https://stackedit.io/app#
-# pip3 install KUPINET
-# from KUPINET import KUPI
-#
-# orders = KUPI.NET.Stocks('Binance').getOrders('ETH','BTC')
-# print(orders)
-#
-# pairs = KUPI.NET.Stocks('Binance').getAllPairs()
-# print(pairs)
-#
-# prices = KUPI.NET.Pair('LTC', 'ETH').getBestPrices()
-# print(prices)

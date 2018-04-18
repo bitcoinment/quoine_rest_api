@@ -22,7 +22,7 @@ The data of all exchanges come in a single format and contain extended informati
 
 
 ### Installation Instructions
-    $ pip3 install quoine-rest-api==1.4.4
+    $ pip3 install quoine-rest-api==4.0.1
 
 ### Init example
 ```python
